@@ -1,0 +1,233 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ConnectionType {
+  romantic
+  family
+  platonic
+  professional
+}
+
+enum Openness {
+  quick
+  gradual
+  situational
+}
+
+enum StressResponse {
+  freeze
+  expand
+  fight_flight
+}
+
+enum SocialSeason {
+  spring
+  summer
+  fall
+  winter
+}
+
+enum ConflictStyle {
+  resolve_now
+  process_first
+  avoid
+}
+
+enum Season {
+  spring
+  summer
+  fall
+  winter
+}
+
+enum LightProfile {
+  high_light
+  low_light
+}
+
+enum LatitudeTier {
+  high
+  mid
+  low
+}
+
+enum Chronotype {
+  lark
+  owl
+  neutral
+}
+
+enum NeuroLevel {
+  high
+  moderate
+  low
+}
+
+enum CompatibilityTier {
+  high
+  moderate
+  low
+}
+
+enum SeasonalTier {
+  protective
+  moderate
+  risky
+}
+
+enum EnergyLevel {
+  rising
+  peak
+  dipping
+  low
+}
+
+enum MismatchRisk {
+  low
+  moderate
+  high
+}
+
+enum NudgeCategory {
+  withdrawal
+  over_commitment
+  intensity_seeking
+  scarcity_lock
+  optimism_bias
+}
+
+model User {
+  id           String          @id @default(cuid())
+  name         String
+  email        String          @unique
+  passwordHash String
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  bioProfile      BioProfile?
+  connections     Connection[] @relation("ConnectionOwner")
+  connectedWith   Connection[] @relation("ConnectionConnectedUser")
+  coachingNudges  CoachingNudge[]
+}
+
+model BioProfile {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  dob          DateTime
+
+  birthCity    String
+  birthState   String?
+  birthCountry String
+  birthLat     Float
+  birthLng     Float
+
+  openness       Openness
+  stressResponse StressResponse
+  socialSeason   SocialSeason
+  conflictStyle  ConflictStyle
+
+  season        Season
+  lightProfile  LightProfile
+  latitudeTier  LatitudeTier
+  chronotype    Chronotype
+  stressBaseline StressResponse
+  vulnerabilityStartMonth Int
+  vulnerabilityEndMonth   Int
+  dopamine      NeuroLevel
+  serotonin     NeuroLevel
+
+  adjustedChronotype    Chronotype?
+  adjustedStressBaseline StressResponse?
+  adjustedSocialSeason  SocialSeason?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Connection {
+  id           String         @id @default(cuid())
+  ownerId      String
+  type         ConnectionType
+  connectedUserId String?
+  manualProfile Json?
+  compatibilityReportId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner          User @relation("ConnectionOwner", fields: [ownerId], references: [id])
+  connectedUser  User? @relation("ConnectionConnectedUser", fields: [connectedUserId], references: [id])
+  compatibilityReport CompatibilityReport?
+  seasonalForecasts   SeasonalForecast[]
+  coachingNudges      CoachingNudge[]
+}
+
+model CompatibilityReport {
+  id           String   @id @default(cuid())
+  connectionId String   @unique
+
+  scoreOverall    Int
+  scoreChronotype Int
+  scoreStress     Int
+  scoreSeasonal   Int
+
+  tierChronotype CompatibilityTier
+  tierStress     CompatibilityTier
+  tierSeasonal   SeasonalTier
+
+  archetype   String
+  dimensions  Json
+  generatedAt DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  connection Connection @relation(fields: [connectionId], references: [id])
+}
+
+model SeasonalForecast {
+  id           String @id @default(cuid())
+  connectionId String
+  month        Int
+  year         Int
+
+  userAEnergyLevel EnergyLevel
+  userAInVulnerabilityWindow Boolean
+  userBEnergyLevel EnergyLevel
+  userBInVulnerabilityWindow Boolean
+
+  mismatchRisk MismatchRisk
+  recommendations String[]
+  scripts        String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  connection Connection @relation(fields: [connectionId], references: [id])
+
+  @@unique([connectionId, month, year])
+}
+
+model CoachingNudge {
+  id           String @id @default(cuid())
+  userId       String
+  connectionId String?
+
+  category NudgeCategory
+  trigger  String
+  message  String
+  dismissed Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user       User @relation(fields: [userId], references: [id])
+  connection Connection? @relation(fields: [connectionId], references: [id])
+}

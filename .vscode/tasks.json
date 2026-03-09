@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "geosync-next dev",
+			"type": "shell",
+			"command": "cd /Users/leooladimu1984/geosync-next && npx next dev",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

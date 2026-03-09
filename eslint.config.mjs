@@ -5,6 +5,12 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  // react-compiler rule flags async setState in effects as "cascading renders"
+  // which is a false positive for async data-fetching hooks.
+  {
+    files: ["src/hooks/**"],
+    rules: { "react-compiler/react-compiler": "off" },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

@@ -1,0 +1,14 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npx prisma generate && next build",
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "JWT_SECRET": "@jwt_secret"
+  },
+  "build": {
+    "env": {
+      "DATABASE_URL": "@database_url",
+      "JWT_SECRET": "@jwt_secret"
+    }
+  }
+}
