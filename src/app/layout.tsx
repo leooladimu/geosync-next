@@ -20,6 +20,20 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.svg",
   },
+  openGraph: {
+    title: "geoSync — Biophysical Compatibility",
+    description:
+      "Compatibility scored through chronobiology, stress response, and seasonal imprinting.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "geoSync — Biophysical Compatibility",
+    description:
+      "Compatibility scored through chronobiology, stress response, and seasonal imprinting.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
