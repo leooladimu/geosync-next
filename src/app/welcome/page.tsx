@@ -29,7 +29,7 @@ export default function WelcomePage() {
         </div>
 
         {/* Feature list */}
-        <ul className="text-left flex flex-col gap-5 mb-16">
+        <ul className="text-left flex flex-col gap-5">
           <li className="flex items-start gap-4 text-text-secondary text-sm leading-relaxed">
             <span className="text-base shrink-0 text-accent mt-0.5">{SYMBOLS.star}</span>
             <span>
@@ -54,7 +54,7 @@ export default function WelcomePage() {
         </ul>
 
         {/* CTAs */}
-        <div className="flex flex-col gap-3 mb-10">
+        <div className="flex flex-col gap-3 mb-10 mt-14">
           <Link
             href="/register"
             className="block bg-accent text-text-primary font-semibold text-base py-4 px-8 rounded-xl text-center transition-colors hover:bg-accent-light"
