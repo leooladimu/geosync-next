@@ -22,8 +22,8 @@ function isInWindow(month: number, startMonth: number, endMonth: number): boolea
 }
 
 function getCurrentSeason(month: number): Season {
-  if (month >= 3 && month <= 5)  return "spring";
-  if (month >= 6 && month <= 8)  return "summer";
+  if (month >= 3 && month <= 5) return "spring";
+  if (month >= 6 && month <= 8) return "summer";
   if (month >= 9 && month <= 11) return "fall";
   return "winter";
 }
@@ -39,7 +39,7 @@ function getOppositeSeason(season: Season): Season {
 function isApproachingSeason(currentMonth: number, targetSeason: Season): boolean {
   const seasonMonths: Record<Season, number[]> = {
     spring: [3, 4, 5], summer: [6, 7, 8],
-    fall:   [9, 10, 11], winter: [12, 1, 2],
+    fall: [9, 10, 11], winter: [12, 1, 2],
   };
   const targetMonths = seasonMonths[targetSeason];
   const idx = targetMonths.indexOf(currentMonth);
@@ -123,11 +123,11 @@ export function generateForecast(
 ): ForecastMonth[] {
   const now = new Date();
   const month = startMonth ?? now.getMonth() + 1;
-  const year  = startYear  ?? now.getFullYear();
+  const year = startYear ?? now.getFullYear();
 
   return Array.from({ length: 3 }, (_, i) => {
     const forecastMonth = ((month - 1 + i) % 12) + 1;
-    const forecastYear  = year + Math.floor((month - 1 + i) / 12);
+    const forecastYear = year + Math.floor((month - 1 + i) / 12);
 
     const userA: ForecastUserState = {
       energyLevel: getEnergyLevel(profileA, forecastMonth),
@@ -147,9 +147,9 @@ export function generateForecast(
       ),
     };
 
-    const mismatchRisk    = assessMismatchRisk(userA, userB);
+    const mismatchRisk = assessMismatchRisk(userA, userB);
     const recommendations = generateRecommendations(userA, userB, mismatchRisk);
-    const scripts         = generateScripts(userA, userB, mismatchRisk);
+    const scripts = generateScripts(userA, userB, mismatchRisk);
 
     return { month: forecastMonth, year: forecastYear, userA, userB, mismatchRisk, recommendations, scripts };
   });

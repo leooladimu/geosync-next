@@ -29,7 +29,7 @@ export default function WelcomePage() {
         </div>
 
         {/* Feature list */}
-        <ul className="text-left flex flex-col gap-5 mb-12">
+        <ul className="text-left flex flex-col gap-5 mb-16">
           <li className="flex items-start gap-4 text-text-secondary text-sm leading-relaxed">
             <span className="text-base shrink-0 text-accent mt-0.5">{SYMBOLS.star}</span>
             <span>
